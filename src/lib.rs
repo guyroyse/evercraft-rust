@@ -1,60 +1,98 @@
 use String;
 
+#[derive(Clone)]
 pub struct Hero {
-    _name: String,
-    _alignment: Alignment
+  name: String,
+  alignment: Alignment,
+  damage: u16
 }
 
 impl Hero {
-    pub fn new() -> Hero {
-        Hero {
-            _name: String::new(),
-            _alignment: Alignment::Neutral
-        }
+  pub fn new() -> Self {
+    Hero {
+      name: String::new(),
+      alignment: Alignment::Neutral,
+      damage: 0
     }
+  }
 
-    pub fn name(&self) -> &String {
-        return &self._name;
-    }
+  pub fn name(&self) -> &String {
+    &self.name
+  }
 
-    pub fn set_name(&mut self, name: String) {
-        self._name = name;
-    }
+  pub fn set_name(&mut self, name: String) {
+    self.name = name;
+  }
 
-    pub fn alignment(&self) -> &Alignment {
-        return &self._alignment;
-    }
+  pub fn alignment(&self) -> &Alignment {
+    &self.alignment
+  }
 
-    pub fn set_alignment(&mut self, alignment: Alignment) {
-        self._alignment = alignment;
-    }
+  pub fn set_alignment(&mut self, alignment: Alignment) {
+    self.alignment = alignment;
+  }
 
-    pub fn armor_class(&self) -> u32 {
-        return 10;
-    }
+  pub fn armor_class(&self) -> u8 {
+    10
+  }
 
-    pub fn hit_points(&self) -> i32 {
-        return 5;
-    }
+  pub fn hit_points(&self) -> i16 {
+    5 - self.damage as i16
+  }
+
+  pub fn damage(&mut self, amount: u16) {
+    self.damage = self.damage + amount;
+  }
 }
 
+#[derive(Clone)]
 pub enum Alignment { Good, Neutral, Evil }
 
-pub struct Attack {
-    _attacker: Hero,
-    _defender: Hero
+pub fn resolve_attack(roll: u8, defender: &mut Hero) -> bool {
+  let hit = roll >= defender.armor_class();
+  let critical = roll == 20;
+  if hit && critical {
+    defender.damage(2);
+  } else if hit {
+    defender.damage(1);
+  }
+  hit
 }
 
-impl Attack {
-    pub fn between(attacker: Hero, defender: Hero) -> Attack {
-        Attack {
-            _attacker: attacker,
-            _defender: defender
-        }
+pub struct Attack<'a> {
+  attacker: &'a mut Hero,
+  defender: &'a mut Hero
+}
+
+pub struct ResolvedAttack {
+  hit: bool,
+  critical: bool
+}
+
+impl<'a> Attack<'a> {
+  pub fn between(attacker: &'a mut Hero, defender: &'a mut Hero) -> Attack<'a> {
+    Attack { attacker, defender }
+  }
+
+  pub fn resolve(&mut self, roll: u8) -> ResolvedAttack {
+    let hit = roll >= self.defender.armor_class();
+    let critical = roll == 20;
+    if hit && critical {
+      self.defender.damage(2);
+    } else if hit {
+      self.defender.damage(1);
     }
 
-    pub fn resolve(&self, roll: u32) -> bool {
-        let hit = roll >= self._defender.armor_class();
-        return hit;
-    }
+    ResolvedAttack { hit, critical }
+  }
+}
+
+impl ResolvedAttack {
+  pub fn hit(&self) -> bool {
+    self.hit
+  }
+
+  pub fn critical(&self) -> bool {
+    self.critical
+  }
 }

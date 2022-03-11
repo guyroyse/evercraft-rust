@@ -2,60 +2,75 @@ use evercraft::*;
 
 #[test]
 fn it_misses_on_a_natural_1() {
-  let attacker = Hero::new();
-  let defender = Hero::new();
+  let mut attacker = Hero::new();
+  let mut defender = Hero::new();
   let roll = 1;
+  let expected_hp = defender.hit_points();
 
-  let attack = Attack::between(attacker, defender);
+  let mut attack = Attack::between(&mut attacker, &mut defender);
+  let attack = attack.resolve(roll);
 
-  let hit = attack.resolve(roll);
-  assert!(hit == false);
+  assert!(attack.hit() == false);
+  assert!(attack.critical() == false);
+  assert_eq!(defender.hit_points(), expected_hp);
 }
 
 #[test]
 fn it_misses_when_a_roll_proceeds_defenders_armor_class() {
-  let attacker = Hero::new();
-  let defender = Hero::new();
+  let mut attacker = Hero::new();
+  let mut defender = Hero::new();
   let roll = defender.armor_class() - 1;
+  let expected_hp = defender.hit_points();
 
-  let attack = Attack::between(attacker, defender);
+  let mut attack = Attack::between(&mut attacker, &mut defender);
+  let attack = attack.resolve(roll);
 
-  let hit = attack.resolve(roll);
-  assert!(hit == false);
+  assert!(attack.hit() == false);
+  assert!(attack.critical() == false);
+  assert_eq!(defender.hit_points(), expected_hp);
 }
 
 #[test]
 fn it_hits_when_roll_meets_defenders_armor_class() {
-  let attacker = Hero::new();
-  let defender = Hero::new();
+  let mut attacker = Hero::new();
+  let mut defender = Hero::new();
   let roll = defender.armor_class();
+  let expected_hp = defender.hit_points() - 1;
 
-  let attack = Attack::between(attacker, defender);
+  let mut attack = Attack::between(&mut attacker, &mut defender);
+  let attack = attack.resolve(roll);
 
-  let hit = attack.resolve(roll);
-  assert!(hit == true);
+  assert!(attack.hit() == true);
+  assert!(attack.critical() == false);
+  assert_eq!(defender.hit_points(), expected_hp);
 }
 
 #[test]
 fn it_hits_when_roll_exceeds_defenders_armor_class() {
-  let attacker = Hero::new();
-  let defender = Hero::new();
+  let mut attacker = Hero::new();
+  let mut defender = Hero::new();
   let roll = defender.armor_class() + 1;
+  let expected_hp = defender.hit_points() - 1;
 
-  let attack = Attack::between(attacker, defender);
+  let mut attack = Attack::between(&mut attacker, &mut defender);
+  let attack = attack.resolve(roll);
 
-  let hit = attack.resolve(roll);
-  assert!(hit == true);
+  assert!(attack.hit() == true);
+  assert!(attack.critical() == false);
+  assert_eq!(defender.hit_points(), expected_hp);
 }
 
 #[test]
 fn it_hits_on_a_natural_20() {
-  let attacker = Hero::new();
-  let defender = Hero::new();
+  let mut attacker = Hero::new();
+  let mut defender = Hero::new();
   let roll = 20;
+  let expected_hp = defender.hit_points() - 2;
 
-  let attack = Attack::between(attacker, defender);
+  let mut attack = Attack::between(&mut attacker, &mut defender);
+  let attack = attack.resolve(roll);
 
-  let hit = attack.resolve(roll);
-  assert!(hit == true);
+  assert!(attack.hit() == true);
+  assert!(attack.critical() == true);
+  assert_eq!(defender.hit_points(), expected_hp);
 }
