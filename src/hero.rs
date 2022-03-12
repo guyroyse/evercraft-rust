@@ -1,4 +1,4 @@
-use crate::Alignment;
+use crate::*;
 
 pub struct Hero {
   name: String,
@@ -30,16 +30,22 @@ impl Hero {
   pub fn set_alignment(&mut self, alignment: Alignment) {
     self.alignment = alignment;
   }
+}
 
-  pub fn armor_class(&self) -> u8 {
+impl Combatant for Hero {
+  fn armor_class(&self) -> u8 {
     10
   }
 
-  pub fn hit_points(&self) -> i16 {
+  fn hit_points(&self) -> i16 {
     5 - self.damage as i16
   }
 
-  pub fn damage(&mut self, amount: u16) {
+  fn damage(&mut self, amount: u16) {
     self.damage = self.damage + amount;
+  }
+
+  fn alive(&self) -> bool {
+    self.hit_points() > 0
   }
 }

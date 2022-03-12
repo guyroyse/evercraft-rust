@@ -1,8 +1,13 @@
-use crate::Hero;
+pub trait Combatant {
+  fn armor_class(&self) -> u8;
+  fn hit_points(&self) -> i16;
+  fn damage(&mut self, amount: u16);
+  fn alive(&self) -> bool;
+}
 
 pub struct Attack<'a> {
-  attacker: &'a mut Hero,
-  defender: &'a mut Hero
+  attacker: &'a mut dyn Combatant,
+  defender: &'a mut dyn Combatant
 }
 
 pub struct ResolvedAttack {
@@ -11,7 +16,7 @@ pub struct ResolvedAttack {
 }
 
 impl<'a> Attack<'a> {
-  pub fn between(attacker: &'a mut Hero, defender: &'a mut Hero) -> Attack<'a> {
+  pub fn between(attacker: &'a mut dyn Combatant, defender: &'a mut dyn Combatant) -> Attack<'a> {
     Attack { attacker, defender }
   }
 
