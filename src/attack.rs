@@ -6,6 +6,7 @@ pub trait Combatant {
 }
 
 pub struct Attack<'a> {
+  #[allow(dead_code)]
   attacker: &'a mut dyn Combatant,
   defender: &'a mut dyn Combatant
 }
