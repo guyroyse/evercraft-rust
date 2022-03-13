@@ -6,6 +6,7 @@ pub struct Hero {
   alignment: Alignment,
   strength: Ability,
   dexterity: Ability,
+  constitution: Ability,
   damage: u16
 }
 
@@ -16,6 +17,7 @@ impl Hero {
       alignment: Alignment::Neutral,
       strength: Ability::new(),
       dexterity: Ability::new(),
+      constitution: Ability::new(),
       damage: 0
     }
   }
@@ -43,15 +45,29 @@ impl Hero {
   pub fn dexterity(&mut self) -> &mut Ability {
     &mut self.dexterity
   }
+
+  pub fn constitution(&mut self) -> &mut Ability {
+    &mut self.constitution
+  }
 }
 
 impl Combatant for Hero {
   fn ac(&self) -> u8 {
-    (10 + self.dexterity.modifier()) as u8
+    let base_ac = 10 as i8;
+    let dex_mod = self.dexterity.modifier() as i8;
+    (base_ac + dex_mod) as u8
   }
 
-  fn hp(&self) -> i16 {
-    5 - self.damage as i16
+  fn hp(&self) -> u16 {
+    let base_hp = 5 as i16;
+    let con_mod = self.constitution.modifier() as i16;
+    (base_hp + con_mod) as u16
+  }
+
+  fn current_hp(&self) -> i16 {
+    let hp = self.hp() as i16;
+    let damage = self.damage as i16;
+    hp - damage
   }
 
   fn hit_modifier(&self) -> i8 {
@@ -71,6 +87,6 @@ impl Combatant for Hero {
   }
 
   fn alive(&self) -> bool {
-    self.hp() > 0
+    self.current_hp() > 0
   }
 }

@@ -23,6 +23,7 @@ impl Ability {
   }
 
   pub fn modifier(&self) -> i8 {
-    self.score as i8 / 2 - 5
+    let score = self.score as i8;
+    score / 2 - 5
   }
 }

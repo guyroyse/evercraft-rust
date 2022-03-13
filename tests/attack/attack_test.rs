@@ -8,7 +8,7 @@ fn when_rolling_a_natural_1() {
   let attack = resolve_attack(1, &mut attacker, &mut defender);
 
   it_misses(&attack);
-  it_is_not_a_critical(&attack);
+  it_is_not_a_crit(&attack);
   it_deals_no_damage(&defender);
 }
 
@@ -20,7 +20,7 @@ fn when_roll_proceeds_defenders_armor_class() {
   let attack = resolve_attack(9, &mut attacker, &mut defender);
 
   it_misses(&attack);
-  it_is_not_a_critical(&attack);
+  it_is_not_a_crit(&attack);
   it_deals_no_damage(&defender);
 }
 
@@ -32,7 +32,7 @@ fn when_roll_equals_defenders_armor_class() {
   let attack = resolve_attack(10, &mut attacker, &mut defender);
 
   it_hits(&attack);
-  it_is_not_a_critical(&attack);
+  it_is_not_a_crit(&attack);
   it_deals_expected_damage(&defender, 1);
 }
 
@@ -44,7 +44,7 @@ fn when_roll_exceeds_defenders_armor_class() {
   let attack = resolve_attack(11, &mut attacker, &mut defender);
 
   it_hits(&attack);
-  it_is_not_a_critical(&attack);
+  it_is_not_a_crit(&attack);
   it_deals_expected_damage(&defender, 1);
 }
 
@@ -56,7 +56,7 @@ fn when_roll_is_a_natural_20() {
   let attack = resolve_attack(20, &mut attacker, &mut defender);
 
   it_hits(&attack);
-  it_is_a_critical(&attack);
+  it_is_a_crit(&attack);
   it_deals_expected_damage(&defender, 2);
 }
 
@@ -73,12 +73,12 @@ fn it_misses(attack: &ResolvedAttack) {
   assert!(attack.hit() == false);
 }
 
-fn it_is_a_critical(attack: &ResolvedAttack) {
-  assert!(attack.critical() == true);
+fn it_is_a_crit(attack: &ResolvedAttack) {
+  assert!(attack.crit() == true);
 }
 
-fn it_is_not_a_critical(attack: &ResolvedAttack) {
-  assert!(attack.critical() == false);
+fn it_is_not_a_crit(attack: &ResolvedAttack) {
+  assert!(attack.crit() == false);
 }
 
 fn it_deals_no_damage(combatant: &MockCombatant) {
@@ -109,7 +109,8 @@ impl MockCombatant {
 
 impl Combatant for MockCombatant {
   fn ac(&self) -> u8 { self.ac }
-  fn hp(&self) -> i16 { 5 }
+  fn hp(&self) -> u16 { 5 }
+  fn current_hp(&self) -> i16 { 5 }
   fn alive(&self) -> bool { true }
   fn hit_modifier(&self) -> i8 { 0 }
   fn hit_damage(&self) -> u16 { 1 }

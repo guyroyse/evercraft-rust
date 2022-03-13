@@ -8,7 +8,7 @@ pub struct Attack<'a> {
 
 pub struct ResolvedAttack {
   hit: bool,
-  critical: bool
+  crit: bool
 }
 
 impl<'a> Attack<'a> {
@@ -18,14 +18,14 @@ impl<'a> Attack<'a> {
 
   pub fn resolve(&mut self, roll: u8) -> ResolvedAttack {
     let hit = roll >= self.defender.ac();
-    let critical = roll == 20;
-    if hit && critical {
+    let crit = roll == 20;
+    if hit && crit {
       self.defender.damage(2);
     } else if hit {
       self.defender.damage(1);
     }
 
-    ResolvedAttack { hit, critical }
+    ResolvedAttack { hit, crit }
   }
 }
 
@@ -34,7 +34,7 @@ impl ResolvedAttack {
     self.hit
   }
 
-  pub fn critical(&self) -> bool {
-    self.critical
+  pub fn crit(&self) -> bool {
+    self.crit
   }
 }
