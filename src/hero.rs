@@ -61,7 +61,7 @@ impl Combatant for Hero {
   fn hp(&self) -> u16 {
     let base_hp = 5 as i16;
     let con_mod = self.constitution.modifier() as i16;
-    (base_hp + con_mod) as u16
+    cmp::max(1, base_hp + con_mod) as u16
   }
 
   fn current_hp(&self) -> i16 {

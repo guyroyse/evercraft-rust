@@ -19,3 +19,10 @@ fn it_add_constitution_modifier_to_hp() {
   hero.constitution().set_score(14).ok();
   assert_eq!(hero.hp(), 7);
 }
+
+#[test]
+fn it_has_minimum_hp_of_1_regardless_of_constitution_modifier() {
+  let mut hero = Hero::new();
+  hero.constitution().set_score(1).ok();
+  assert_eq!(hero.hp(), 1);
+}
