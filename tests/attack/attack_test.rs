@@ -91,13 +91,13 @@ fn it_deals_expected_damage(combatant: &MockCombatant, expected: u16) {
 
 fn standard_combatant() -> MockCombatant {
   MockCombatant {
-    armor_class: 10,
+    ac: 10,
     damage: 0
   }
 }
 
 struct MockCombatant {
-  armor_class: u8,
+  ac: u8,
   damage: u16,
 }
 
@@ -108,13 +108,12 @@ impl MockCombatant {
 }
 
 impl Combatant for MockCombatant {
-  fn hit_points(&self) -> i16 { 5 }
+  fn ac(&self) -> u8 { self.ac }
+  fn hp(&self) -> i16 { 5 }
   fn alive(&self) -> bool { true }
-
-  fn armor_class(&self) -> u8 {
-    self.armor_class
-  }
-
+  fn hit_modifier(&self) -> i8 { 0 }
+  fn hit_damage(&self) -> u16 { 1 }
+  fn crit_damage(&self) -> u16 { 2 }
   fn damage(&mut self, amount: u16) {
     self.damage = self.damage + amount;
   }

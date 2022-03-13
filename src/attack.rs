@@ -17,7 +17,7 @@ impl<'a> Attack<'a> {
   }
 
   pub fn resolve(&mut self, roll: u8) -> ResolvedAttack {
-    let hit = roll >= self.defender.armor_class();
+    let hit = roll >= self.defender.ac();
     let critical = roll == 20;
     if hit && critical {
       self.defender.damage(2);

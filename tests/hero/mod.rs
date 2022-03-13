@@ -1,5 +1,6 @@
-mod name_test;
-mod alignment_test;
-mod armor_class_test;
-mod hit_points_test;
+mod ac_test;
 mod alive_test;
+mod damage_test;
+mod hero_test;
+mod hit_modifier_test;
+mod hp_test;
