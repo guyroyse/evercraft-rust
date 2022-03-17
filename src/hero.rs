@@ -7,7 +7,8 @@ pub struct Hero {
   strength: Ability,
   dexterity: Ability,
   constitution: Ability,
-  damage: u16
+  damage: u16,
+  xp: u32
 }
 
 impl Hero {
@@ -18,7 +19,8 @@ impl Hero {
       strength: Ability::new(),
       dexterity: Ability::new(),
       constitution: Ability::new(),
-      damage: 0
+      damage: 0,
+      xp: 0
     }
   }
 
@@ -83,10 +85,18 @@ impl Combatant for Hero {
   }
 
   fn damage(&mut self, amount: u16) {
-    self.damage = self.damage + amount;
+    self.damage += amount;
   }
 
   fn alive(&self) -> bool {
     self.current_hp() > 0
+  }
+
+  fn xp(&self) -> u32 {
+    self.xp
+  }
+
+  fn add_xp(&mut self, amount: u32) {
+    self.xp += amount;
   }
 }

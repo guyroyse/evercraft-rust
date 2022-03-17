@@ -17,15 +17,27 @@ impl<'a> Attack<'a> {
   }
 
   pub fn resolve(&mut self, roll: u8) -> ResolvedAttack {
+
     let hit = roll >= self.defender.ac();
     let crit = roll == 20;
-    if hit && crit {
-      self.defender.damage(2);
-    } else if hit {
-      self.defender.damage(1);
+
+    match (hit, crit) {
+      (_, true) => self.resolve_crit(),
+      (true, _) => self.resolve_hit(),
+      _ => ()
     }
 
     ResolvedAttack { hit, crit }
+  }
+
+  fn resolve_hit(&mut self) {
+    self.defender.damage(self.attacker.hit_damage());
+    self.attacker.add_xp(10);
+  }
+
+  fn resolve_crit(&mut self) {
+    self.defender.damage(self.attacker.crit_damage());
+    self.attacker.add_xp(10);
   }
 }
 

@@ -7,4 +7,6 @@ pub trait Combatant {
   fn crit_damage(&self) -> u16;
   fn damage(&mut self, amount: u16);
   fn alive(&self) -> bool;
+  fn xp(&self) -> u32;
+  fn add_xp(&mut self, amount: u32);
 }
