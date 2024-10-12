@@ -8,7 +8,7 @@ pub struct Hero {
   dexterity: Ability,
   constitution: Ability,
   damage: u16,
-  xp: u32
+  xp: u32,
 }
 
 impl Hero {
@@ -20,7 +20,7 @@ impl Hero {
       dexterity: Ability::new(),
       constitution: Ability::new(),
       damage: 0,
-      xp: 0
+      xp: 0,
     }
   }
 

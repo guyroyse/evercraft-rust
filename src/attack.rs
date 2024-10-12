@@ -3,16 +3,16 @@ use crate::*;
 pub struct Attack<'a> {
   #[allow(dead_code)]
   attacker: &'a mut dyn Combatant,
-  defender: &'a mut dyn Combatant
+  defender: &'a mut dyn Combatant,
 }
 
 pub struct ResolvedAttack {
   hit: bool,
-  crit: bool
+  crit: bool,
 }
 
 pub struct Roll {
-  roll: u8
+  roll: u8,
 }
 
 impl<'a> Attack<'a> {
@@ -21,17 +21,16 @@ impl<'a> Attack<'a> {
   }
 
   pub fn resolve(&mut self, roll: u8) -> ResolvedAttack {
-
     let smart_roll = Roll::new(roll);
     let adjusted_roll = smart_roll.value_plus(self.attacker.hit_modifier());
 
-    let hit = !smart_roll.natural_1() && adjusted_roll >= self.defender.ac() as i8;
+    let hit = !smart_roll.natural_1() && adjusted_roll >= (self.defender.ac() as i8);
     let crit = smart_roll.natural_20();
 
     match (hit, crit) {
       (_, true) => self.resolve_crit(),
       (true, _) => self.resolve_hit(),
-      _ => ()
+      _ => (),
     }
 
     ResolvedAttack { hit, crit }
@@ -76,6 +75,6 @@ impl Roll {
   }
 
   pub fn value_plus(&self, modifier: i8) -> i8 {
-    self.roll as i8 + modifier
+    (self.roll as i8) + modifier
   }
 }

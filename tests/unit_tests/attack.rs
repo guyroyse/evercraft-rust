@@ -78,7 +78,11 @@ fn when_roll_is_a_natural_20() {
   it_gives_the_attacker_xp(&attacker, 10);
 }
 
-fn resolve_attack(roll: u8, attacker: &mut dyn Combatant, defender: &mut dyn Combatant) -> ResolvedAttack {
+fn resolve_attack(
+  roll: u8,
+  attacker: &mut dyn Combatant,
+  defender: &mut dyn Combatant
+) -> ResolvedAttack {
   let mut attack = Attack::between(attacker, defender);
   attack.resolve(roll)
 }
@@ -133,7 +137,7 @@ struct MockCombatant {
   hit_damage: u16,
   crit_damage: u16,
   damage: u16,
-  xp: u32
+  xp: u32,
 }
 
 impl MockCombatant {
@@ -146,14 +150,30 @@ impl MockCombatant {
 }
 
 impl Combatant for MockCombatant {
-  fn ac(&self) -> u8 { self.ac }
-  fn hp(&self) -> u16 { 5 }
-  fn current_hp(&self) -> i16 { 5 }
-  fn alive(&self) -> bool { true }
-  fn hit_modifier(&self) -> i8 { self.hit_modifier }
-  fn hit_damage(&self) -> u16 { self.hit_damage }
-  fn crit_damage(&self) -> u16 { self.crit_damage }
-  fn xp(&self) -> u32 { 0 }
+  fn ac(&self) -> u8 {
+    self.ac
+  }
+  fn hp(&self) -> u16 {
+    5
+  }
+  fn current_hp(&self) -> i16 {
+    5
+  }
+  fn alive(&self) -> bool {
+    true
+  }
+  fn hit_modifier(&self) -> i8 {
+    self.hit_modifier
+  }
+  fn hit_damage(&self) -> u16 {
+    self.hit_damage
+  }
+  fn crit_damage(&self) -> u16 {
+    self.crit_damage
+  }
+  fn xp(&self) -> u32 {
+    0
+  }
   fn damage(&mut self, amount: u16) {
     self.damage += amount;
   }

@@ -1,7 +1,7 @@
 use crate::*;
 
 pub struct Ability {
-  score: u8
+  score: u8,
 }
 
 impl Ability {
@@ -14,7 +14,7 @@ impl Ability {
   }
 
   pub fn set_score(&mut self, score: u8) -> Result<(), EvercraftError> {
-    if score >=1 && score <= 20 {
+    if score >= 1 && score <= 20 {
       self.score = score;
       Ok(())
     } else {

@@ -1,1 +1,5 @@
-pub enum Alignment { Good, Neutral, Evil }
+pub enum Alignment {
+  Good,
+  Neutral,
+  Evil,
+}
